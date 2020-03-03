@@ -1,0 +1,26 @@
+{
+    "manifestVersion": 1,
+    "contributions": [
+        {
+            "id": "my-required-task",
+	    "publisher": "Govindarajan",
+	    "version": "1.0.0",
+ 	    "name": "My First Extension",
+ 	    "description": "A sample Visual Studio Services extension",
+            "type": "ms.azure-pipelines.pipeline-decorator",
+            "targets": [
+                "ms.azure-pipelines-agent-job.post-job-tasks"
+            ],
+            "properties": {
+                "template": "my-decorator.yml"
+            }
+        }
+    ],
+    "files": [
+        {
+            "path": "my-decorator.yml",
+            "addressable": true,
+            "contentType": "text/plain"
+        }
+    ]
+}

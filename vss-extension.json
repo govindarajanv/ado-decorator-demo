@@ -1,0 +1,40 @@
+{
+ 	"manifestVersion": 1,
+ 	"id": "my-first-extension",
+ 	"publisher": "Govind",
+ 	"version": "1.0.0",
+ 	"name": "My First Extension",
+ 	"description": "A sample Visual Studio Services extension",
+ 	"public": false,
+ 	"categories": ["Azure Repos"],
+ 	"targets": [
+ 		{
+ 			"id": "Microsoft.VisualStudio.Services"
+ 		}
+ 	],
+ 	"contributions": [
+ 		{
+            		"id": "my-required-task",
+            		"type": "ms.azure-pipelines.pipeline-decorator",
+			"targets": [
+			    "ms.azure-pipelines-agent-job.post-job-tasks"
+			],
+ 			"properties": {
+ 				"name": "My Hub",
+ 				"uri": "my-decorator.yml"
+ 			}
+ 		}
+ 	],
+ 	"files": [
+ 		{
+			    "path": "my-decorator.yml",
+			    "addressable": true,
+			    "contentType": "text/plain"
+ 		},
+ 		{
+ 			"path": "node_modules/vss-web-extension-sdk/lib",
+ 			"addressable": true,
+ 			"packagePath": "lib"
+ 		}
+ 	]
+ }
