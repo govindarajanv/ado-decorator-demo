@@ -1,0 +1,41 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool: 'CodeWayAWSLinux'
+
+steps:
+- task: CmdLine@2
+  displayName: Install NPM
+  inputs:
+    script: 'sudo yum install -y gcc-c++ make && curl -sL https://rpm.nodesource.com/setup_13.x | sudo -E bash - && sudo yum install -y nodejs && node -v  && npm -v'
+#- task: Npm@1
+#  displayName: npm install
+#  inputs:
+#    command: 'install'
+#    workingDir: 'buildAndReleaseTask'
+
+# TFX - Node CLI for Azure DevOps (TFS Cross Platform Command Line Interface) 
+- task: CmdLine@2
+  displayName: Globally install TFX
+  inputs:
+    script: 'sudo npm i -g tfx-cli'
+- task: CmdLine@2
+  displayName: tfx extension create
+  inputs:
+    script: 'tfx extension create --manifest-globs vss-extension.json'
+- task: CopyFiles@2
+  displayName: Copy VSIX to artifact staging directory
+  inputs:
+    Contents: '*vsix'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+- task: PublishBuildArtifacts@1
+  displayName: Publish VSIX as artifact
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
