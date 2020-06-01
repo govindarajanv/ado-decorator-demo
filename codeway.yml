@@ -43,7 +43,7 @@ steps:
 - template: /steps/aws-assumerole-v0.yaml
   parameters:
     roleARN: ${{parameters.roleArn}}
-    externalId: ${{parameters.externalId}}
+    #externalId: ${{parameters.externalId}}
     sessionDuration: '3600'
 - task: PythonScript@0
   inputs:
