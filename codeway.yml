@@ -42,7 +42,7 @@ steps:
   # Assume the account IAM role with privileges to provision the infrastructure
 - template: /steps/aws-assumerole-v0.yaml
   parameters:
-    roleARN: ${{roleArn}}
+    roleARN: ${roleArn}
     #externalId: ${{parameters.externalId}}
     sessionDuration: '3600'
 - task: PythonScript@0
