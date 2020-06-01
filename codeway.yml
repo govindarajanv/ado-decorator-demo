@@ -39,3 +39,41 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+  # Assume the account IAM role with privileges to provision the infrastructure
+- template: /steps/aws-assumerole-v0.yaml
+  parameters:
+    roleARN: ${{parameters.roleArn}}
+    externalId: ${{parameters.externalId}}
+    sessionDuration: '3600'
+- task: PythonScript@0
+  inputs:
+    scriptSource: 'inline'
+    script: |
+      import json
+      import boto3
+      import random
+
+      cloudwatch = boto3.client('cloudwatch')
+      rand_value = random.randint(1, 500)
+      response = cloudwatch.put_metric_data(
+      MetricData = [
+          {
+              'MetricName': 'CodeWayPOCQueueTime',
+              'Dimensions': [
+                  {
+                      'Name': 'CodeWayBuildQueueMonitoring',
+                      'Value': 'BuildQueueDelayInSeconds'
+                  },
+              ],
+              'Unit': 'Seconds',
+              'Value': rand_value
+          },
+      ],
+      Namespace = 'CodeWayBuildTime'
+      )
+      print ("Build Delay in second",rand_value)
+      print (response)
+      return {
+          'statusCode': 200,
+          'body': json.dumps('Test Successful!')
+      }
